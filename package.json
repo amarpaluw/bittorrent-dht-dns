@@ -1,0 +1,24 @@
+{
+  "name": "bittorrent-dht-dns",
+  "version": "1.0.0",
+  "description": "A DNS client-server implementation that stores DNS records in BitTorrent DHT.",
+  "main": "test-put.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/amarpaluw/bittorrent-dht-dns.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/amarpaluw/bittorrent-dht-dns/issues"
+  },
+  "homepage": "https://github.com/amarpaluw/bittorrent-dht-dns#readme",
+  "dependencies": {
+    "bittorrent-dht": "^7.4.0",
+    "ed25519-supercop": "^1.0.2"
+  }
+}
