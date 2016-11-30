@@ -1,4 +1,4 @@
-// Copyright (C) 2016 Rajas Agashe, Amarpal Singh.
+// Copyright (C) 2016 Amarpal Singh, Rajas Agashe.
 // All rights reserved.
 //
 // THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR
@@ -14,27 +14,14 @@
 //
 
 var ed = require('ed25519-supercop')
-var keypair = ed.createKeyPair(ed.createSeed())
-
-var value = new Buffer(200).fill('whatever') // the payload you want to send
-var opts = {
-	  k: keypair.publicKey,
-	  seq: 0,
-	  v: value,
-	  sign: function (buf) {
-		  return ed.sign(buf, keypair.publicKey, keypair.secretKey)
-	  }
-}
-
 var DHT = require('bittorrent-dht')
-var dht = new DHT
+var dht = new DHT({ verify: ed.verify })
 
-dht.put(opts, function (err, hash) {
-	  console.log('Put Successful!')
-	  console.log('\tput hash=', hash)
-	  // the hash is the key
-	  dht.get(hash, function (err, res) {
-		  console.log('Get Successful!')
-	      console.log('\tgot=', res)
-	  })
+var key = new Buffer(
+ 'TX43A2V70VD8ZvjEU0u/Ye6f7H0=',
+ 'base64'
+)
+dht.get(key, function (err, res) {
+ console.log(res.v.toString())
+ dht.destroy()
 })
