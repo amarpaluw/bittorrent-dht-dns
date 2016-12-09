@@ -25,10 +25,9 @@ var MAX_SIZE = 100;
 var PUBLIC_KEY_SIZE = 32;
 var DEBUG = 1;
 
-
 var gdns = require('./dns-res');
 gdns.getDnsResolutions(updateDht);
-
+var ins = require('./insert-res');
 
 function updateDht(resolutions) {
     if (DEBUG) {
@@ -36,7 +35,11 @@ function updateDht(resolutions) {
     }
     var pages = assignResolutionsToPages(resolutions);
     var linkedPages = linkPages(pages);
-    insertPagesIntoDHT(linkedPages);
+    ins.insertPagesIntoDHT(linkedPages, function(results) {
+        if (DEBUG) {
+            console.log("Insert complete");
+        }
+    });
 }
 
 // array of resolutions that are concatenated into a string that's under
@@ -80,11 +83,6 @@ function linkPages(pages) {
 
     return pages;
 }
-
-function insertPagesIntoDHT(linkedPages) {
-    // perform a map function with a put over all elements
-}
-
 
 function generateKeys() {
     return KP();
