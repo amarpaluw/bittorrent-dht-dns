@@ -13,21 +13,70 @@
 // THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 //
 
-var ed = require('ed25519-supercop')
-var DHT = require('bittorrent-dht')
-var dht = new DHT({ verify: ed.verify })
-var keypair = ed.createKeyPair(ed.createSeed())
-var keypair = {}
+var ed = require('ed25519-supercop');
+var DHT = require('bittorrent-dht');
+var dht = new DHT({ verify: ed.verify });
+var MAX_SIZE = 100;
+var PUBLIC_KEY_SIZE = 32;
+var DEBUG = 1;
 
 
 var gdns = require('./dns-res');
+gdns.getDnsResolutions(updateDht);
 
 
 function updateDht(resolutions) {
     console.log("Got Resolutions", resolutions);
+    var pages = assignResolutionsToPages(resolutions);
+    var linkedPages = linkPages(pages);
+
 }
 
-gdns.getDnsResolutions(updateDht);
+function assignResolutionsToPages(resolutions) {
+    var currString = "";
+    var pages = [];
+    for (var i = 0; i < resolutions.length; i++) {
+        var buf = Buffer.from((currString + resolutions[i] + " "), 'utf8');
+        if (buf.length > MAX_SIZE) {
+            pages.push({'resolutions': currString});
+            currString = resolutions[i] + " ";
+        } else {
+            currString += resolutions[i] + " ";
+        }
+    }
+    pages.push({'resolutions': currString});
+
+    if (DEBUG) {
+        for (var i = 0; i < pages.length; i++) {
+            console.log("arr",i,pages[i]);
+        }
+    }
+    return pages
+}
+
+function linkPages(pages) {
+    // TODO generate the top level pages key from stored seed and time
+    // elapsed since time of first seed
+    var curr = "";
+    for (var i = 0; i < pages.length - 1; i++) {
+        pages[i]['next'] = generateKeys();
+        pages[i]['curr'] = curr;
+        curr = pages[i]['next'];
+    }
+    pages[pages.length - 1]['curr'] = curr;
+    pages[pages.length - 1]['next'] = "";
+
+    if (DEBUG) {
+        console.log("Linked Pages", pages);
+    }
+
+    return pages;
+}
+
+
+function generateKeys() {
+    return ed.createKeyPair(ed.createSeed());
+}
 
 // console.log(domain_to_ip);
 // var buf = Buffer.from(domain_to_ip, 'utf8');
