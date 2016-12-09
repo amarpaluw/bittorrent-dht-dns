@@ -20,34 +20,37 @@ var keypair = ed.createKeyPair(ed.createSeed())
 var keypair = {}
 
 
-// resolve the domain to ip
-const dns = require('dns');
-dns.lookup('facebook.com', (err, addresses, family) => {
-    console.log('addresses:', addresses);
-	var domain_to_ip = "facebook.com:" + addresses; // "31.13.76.68";
-	console.log(domain_to_ip);
-	var buf = Buffer.from(domain_to_ip, 'utf8');
+var gdns = require('./dns-res');
 
-	var opts = {
-	 k: keypair.publicKey,
-	 seq: 0,
-	 v: buf,
-	 sign: function (buf) {
-	   return ed.sign(buf, keypair.publicKey, keypair.secretKey)
-	 }
-	}
 
-	dht.put(opts, function (err, hash) {
-	 console.error('error=', err)
-	 console.log('hash=', hash.toString('base64'))
+function updateDht(resolutions) {
+    console.log("Got Resolutions", resolutions);
+}
 
-	 var key = hash;
-	 dht.get(key, function (err, res) {
-		 dht.put(res, function () {
-			 // re-added the key/value pair
-		 console.log(res.v.toString())
-		 dht.destroy()
-		 })
-	 })
-	})
-});
+gdns.getDnsResolutions(updateDht);
+
+// console.log(domain_to_ip);
+// var buf = Buffer.from(domain_to_ip, 'utf8');
+//
+// var opts = {
+//     k: keypair.publicKey,
+//     seq: 0,
+//     v: buf,
+//     sign: function (buf) {
+//         return ed.sign(buf, keypair.publicKey, keypair.secretKey)
+//     }
+// }
+//
+// dht.put(opts, function (err, hash) {
+//     console.error('error=', err)
+//     console.log('hash=', hash.toString('base64'))
+//
+//     var key = hash;
+//     dht.get(key, function (err, res) {
+//         dht.put(res, function () {
+//             // re-added the key/value pair
+//             console.log(res.v.toString())
+//             dht.destroy()
+//         })
+//     })
+// })
