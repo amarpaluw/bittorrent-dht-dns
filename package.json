@@ -11,7 +11,10 @@
     "url": "git+https://github.com/amarpaluw/bittorrent-dht-dns.git"
   },
   "keywords": [],
-  "author": ["Rajas Agashe", "Amarpal Singh"],
+  "author": [
+    "Rajas Agashe",
+    "Amarpal Singh"
+  ],
   "license": "UNLICENSED",
   "bugs": {
     "url": "https://github.com/amarpaluw/bittorrent-dht-dns/issues"
@@ -20,6 +23,7 @@
   "dependencies": {
     "alexa-top-sites": "^1.1.0",
     "bittorrent-dht": "^7.4.0",
+    "dns": "^0.2.2",
     "ed25519-supercop": "^1.0.2",
     "read-file": "^0.2.0"
   }
