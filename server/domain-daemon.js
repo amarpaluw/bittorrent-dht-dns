@@ -14,6 +14,11 @@
 //
 
 var ed = require('ed25519-supercop');
+var path = require('path');
+var KP = require('bittorrent-dht-store-keypair')
+var kpGenerator = KP();
+var firstKp = KP(require(path.resolve("keypair.json")));
+
 var DHT = require('bittorrent-dht');
 var dht = new DHT({ verify: ed.verify });
 var MAX_SIZE = 100;
@@ -26,12 +31,16 @@ gdns.getDnsResolutions(updateDht);
 
 
 function updateDht(resolutions) {
-    console.log("Got Resolutions", resolutions);
+    if (DEBUG) {
+        console.log("Got Resolutions", resolutions);
+    }
     var pages = assignResolutionsToPages(resolutions);
     var linkedPages = linkPages(pages);
-
+    insertPagesIntoDHT(linkedPages);
 }
 
+// array of resolutions that are concatenated into a string that's under
+// the MAX_SIZE is returned
 function assignResolutionsToPages(resolutions) {
     var currString = "";
     var pages = [];
@@ -54,10 +63,9 @@ function assignResolutionsToPages(resolutions) {
     return pages
 }
 
+// each page is assigned a keypair and the keypair of the next page
 function linkPages(pages) {
-    // TODO generate the top level pages key from stored seed and time
-    // elapsed since time of first seed
-    var curr = "";
+    var curr = firstKp;
     for (var i = 0; i < pages.length - 1; i++) {
         pages[i]['next'] = generateKeys();
         pages[i]['curr'] = curr;
@@ -73,33 +81,11 @@ function linkPages(pages) {
     return pages;
 }
 
-
-function generateKeys() {
-    return ed.createKeyPair(ed.createSeed());
+function insertPagesIntoDHT(linkedPages) {
+    // perform a map function with a put over all elements
 }
 
-// console.log(domain_to_ip);
-// var buf = Buffer.from(domain_to_ip, 'utf8');
-//
-// var opts = {
-//     k: keypair.publicKey,
-//     seq: 0,
-//     v: buf,
-//     sign: function (buf) {
-//         return ed.sign(buf, keypair.publicKey, keypair.secretKey)
-//     }
-// }
-//
-// dht.put(opts, function (err, hash) {
-//     console.error('error=', err)
-//     console.log('hash=', hash.toString('base64'))
-//
-//     var key = hash;
-//     dht.get(key, function (err, res) {
-//         dht.put(res, function () {
-//             // re-added the key/value pair
-//             console.log(res.v.toString())
-//             dht.destroy()
-//         })
-//     })
-// })
+
+function generateKeys() {
+    return KP();
+}
