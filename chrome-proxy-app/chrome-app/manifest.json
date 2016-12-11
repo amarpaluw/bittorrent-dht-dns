@@ -1,5 +1,5 @@
 {
-  "name": "BT-DHT-DNS Client Proxy Server App",
+  "name": "BitTorrent-DHT-DNS Client Proxy Server",
   "description": "The BitTorrent-DHT-DNS Client Proxy Server App",
   "version": "0.1",
   "manifest_version": 2,
