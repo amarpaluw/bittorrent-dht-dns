@@ -1,0 +1,15 @@
+{
+  "manifest_version": 2,
+
+  "name": "BitTorent-DHT-DNS Proxy Extension",
+  "description": "This extension configures the use of the BitTorrent-DHT-DNS Proxy Server App",
+  "version": "1.0",
+
+  "background": {
+    "scripts":["background.js"]
+  },
+
+  "permissions": [
+    "proxy"
+  ]
+}

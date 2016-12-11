@@ -1,0 +1,35 @@
+{
+  "name": "bittorrent-dht-dns-client-proxy-server-app",
+  "version": "1.0.0",
+  "description": "The BitTorrent-DHT-DNS Client Proxy Server App",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/amarpaluw/bittorrent-dht-dns.git"
+  },
+  "keywords": [],
+  "author": [
+    "Rajas Agashe",
+    "Amarpal Singh"
+  ],
+  "license": "UNLICENSED",
+  "bugs": {
+    "url": "https://github.com/amarpaluw/bittorrent-dht-dns/issues"
+  },
+  "homepage": "https://github.com/chromiumify/hello-world-proj#readme",
+  "dependencies": {
+    "chrome-debug": "^1.0.0",
+    "chrome-depd": "^1.0.1",
+    "chrome-dgram": "^2.1.7",
+    "chrome-fs": "^2.0.0",
+    "chrome-https": "^2.0.1",
+    "chrome-net": "^2.5.0",
+    "chrome-path": "^1.0.0",
+    "chrome-util-deprecate": "^1.0.0",
+    "http-node": "0.0.2"
+  },
+  "devDependencies": {}
+}
