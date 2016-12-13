@@ -27,7 +27,7 @@ var DEBUG = 1;
 
 var gdns = require('./dns-res');
 gdns.getDnsResolutions(updateDht);
-var ins = require('./insert-res');
+var ins = require('./insert-dht');
 
 function updateDht(resolutions) {
     if (DEBUG) {
@@ -35,10 +35,12 @@ function updateDht(resolutions) {
     }
     var pages = assignResolutionsToPages(resolutions);
     var linkedPages = linkPages(pages);
+    var x = 5;
     ins.insertPagesIntoDHT(linkedPages, function(results) {
         if (DEBUG) {
-            console.log("Insert complete");
+            console.log("Insert complete!");
         }
+        console.log("results = ", results);
     });
 }
 
@@ -50,13 +52,13 @@ function assignResolutionsToPages(resolutions) {
     for (var i = 0; i < resolutions.length; i++) {
         var buf = Buffer.from((currString + resolutions[i] + " "), 'utf8');
         if (buf.length > MAX_SIZE) {
-            pages.push({'resolutions': currString});
+            pages.push({'resolutions': currString.trim()});
             currString = resolutions[i] + " ";
         } else {
             currString += resolutions[i] + " ";
         }
     }
-    pages.push({'resolutions': currString});
+    pages.push({'resolutions': currString.trim()});
 
     if (DEBUG) {
         for (var i = 0; i < pages.length; i++) {
