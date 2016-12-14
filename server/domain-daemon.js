@@ -85,7 +85,9 @@ function linkPages(pages) {
     for (var i = 0; i < pages.length; i++) {
         pages[i]['curr'] = curr;
         curr = generateKeys(curr);
-        console.log(curr);
+        if (DEBUG) {
+            console.log(curr);
+        }
     }
 
 
