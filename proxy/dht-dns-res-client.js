@@ -24,7 +24,7 @@ var PUBLIC_KEY_SIZE = 32;
 var DEBUG = 1;
 
 var initialKey = new Buffer(
-  /* '1yMCDW63E2Y4w+enapqgEnm15kU=', */ 'QiY3P0Buh6lQEXtiuugQ/m8b20M=',
+  'nyJDeBAaWjndr2wEIualWD4y7I8=',
   'base64'
 )
 

@@ -18,8 +18,8 @@ server = socks.createServer(function(socket, port, address, proxy_ready) {
     console.log(address);
     var ip = dnsResolver.dnsLookup(address);
     if (ip) {
-        address = ip
         console.log("Changed ", address, " to ", ip);
+        address = ip
     }
 
     //address = "www.youtube.com";
