@@ -23,9 +23,10 @@ function insertPageIntoDHT(linkedPages, index, hash, callback) {
     var resAndPointer = page['resolutions'] + " " + hash;
     var buf = Buffer.from(resAndPointer, 'utf8');
 
-    dht.put(currKp.store(buf), function (err, hash) {
+    dht.put(currKp.store(buf), function (err, hash, n) {
         if (err) return console.error('Error in putting in dht=', err);
         if (DEBUG) {
+            console.log("~~~~Number of nodes inserted in = ", n)
             console.log(`Inserted pages[${index}] = ${resAndPointer}`);
             console.log(`   Hash = ${hash.toString('base64')}`);
         }

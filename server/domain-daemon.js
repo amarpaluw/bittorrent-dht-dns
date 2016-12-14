@@ -23,10 +23,10 @@ var DHT = require('bittorrent-dht');
 var dht = new DHT({ verify: ed.verify });
 var inserter = require('./insert-dht');
 
-var MAX_SIZE = 100;
+var MAX_SIZE = 950; // 20 is length of hash value
 var PUBLIC_KEY_SIZE = 32;
-var DEBUG = 0;
-var REFRESH_INTERVAL = 600000; // 10 minutes
+var DEBUG = 1;
+var REFRESH_INTERVAL = 120000; // 10 minutes
 
 var iterNumber = 0;
 setInterval(function() {
