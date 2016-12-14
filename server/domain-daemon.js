@@ -25,7 +25,7 @@ var inserter = require('./insert-dht');
 
 var MAX_SIZE = 950; // 20 is length of hash value
 var PUBLIC_KEY_SIZE = 32;
-var DEBUG = 1;
+var DEBUG = 0;
 var REFRESH_INTERVAL = 120000; // 10 minutes
 
 var iterNumber = 0;
@@ -84,8 +84,10 @@ function linkPages(pages) {
     var curr = firstKp;
     for (var i = 0; i < pages.length; i++) {
         pages[i]['curr'] = curr;
-        curr = generateKeys();
+        curr = generateKeys(curr);
+        console.log(curr);
     }
+
 
     if (DEBUG) {
         console.log("Linked Pages", pages);
@@ -94,6 +96,8 @@ function linkPages(pages) {
     return pages;
 }
 
-function generateKeys() {
-    return KP();
+function generateKeys(prevKey) {
+    var kp = ed.createKeyPair(prevKey.publicKey.toString('hex'));
+    kp.seq = 1;
+    return KP(kp);
 }

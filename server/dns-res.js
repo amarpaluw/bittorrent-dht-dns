@@ -1,7 +1,7 @@
 var async = require("async");
 const dns = require('dns');
 const alexa = require('alexa-top-sites');
-var DEBUG = 1;
+var DEBUG = 0;
 const { getPages, byCategory } = require('alexa-top-sites');
 
 // Get the first 10 pages (250 results) of http://www.alexa.com/topsites/category/Top/Computers/Internet
@@ -39,7 +39,6 @@ function dnsLookup(item, callback) {
         domain2 = domain.substring(0, index);
     }
     domain2 = domain2.replace("www.", "");
-    console.log(item, domain2);
 
     dns.lookup(domain2, function (err, addresses, family) {
         if (err) {
