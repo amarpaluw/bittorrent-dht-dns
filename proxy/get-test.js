@@ -7,7 +7,7 @@ var DHT = require('bittorrent-dht')
 var dht = new DHT({ verify: ed.verify })
 
 var key = new Buffer(
-    '1yMCDW63E2Y4w+enapqgEnm15kU=',
+    'nyJDeBAaWjndr2wEIualWD4y7I8=',
     // 'QiY3P0Buh6lQEXtiuugQ/m8b20M=',
     'base64'
 )
