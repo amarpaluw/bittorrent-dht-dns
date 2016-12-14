@@ -8,29 +8,22 @@ var DHT = require('bittorrent-dht')
 var dht = new DHT({ verify: ed.verify })
 
 var key = new Buffer(
-    'h9VsWYniflvfaC1mub8GqbHGqU8=',
+    'QiY3P0Buh6lQEXtiuugQ/m8b20M=',
     'base64'
 )
 
 domainToIp = {}
 
 function queryDHT() {
-    console.log("querying dht");
-    dht.get(key, function (err, res) {
-        if (err) {
-            console.error("Error reading from dht", err);
-        } else {
-            console.log("Read from dht", res.v.toString());
-            var arr = res.v.toString().split(":");
-            domainToIp[arr[0]] = arr[1];
-        }
-    });
+
+
+
 }
 // set timer to update the domain to ip resolutions every 10 minutes
 // since the bittorrent-dht values expire after 2 hours
 setInterval(function() {
     queryDHT();
-}, 60000);
+}, 600000);
 
 queryDHT();
 
