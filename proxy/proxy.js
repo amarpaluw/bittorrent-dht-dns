@@ -1,9 +1,10 @@
 
 var net = require('net'),
 socks = require('./socks.js'),
-dnsResolver = require('./dht-dns-res-client'),
 info = console.log.bind(console);
 
+// Get initial DNS records from DHT
+var dnsResolver = require('./dht-dns-res-client')
 dnsResolver.queryDHT()
 
 
@@ -16,7 +17,8 @@ var HOST='127.0.0.1',
 PORT='8888',
 server = socks.createServer(function(socket, port, address, proxy_ready) {
     console.log(address);
-    var ip = dnsResolver.dnsLookup(address);
+    var lookupAddress  = address.replace("www.", "");
+    var ip = dnsResolver.dnsLookup(lookupAddress);
     if (ip) {
         console.log("Changed ", address, " to ", ip);
         address = ip

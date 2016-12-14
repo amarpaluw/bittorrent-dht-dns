@@ -15,13 +15,14 @@
 
 var ed = require('ed25519-supercop');
 var path = require('path');
-
-
 var DHT = require('bittorrent-dht');
 var dht = new DHT({ verify: ed.verify });
-var MAX_SIZE = 100;
-var PUBLIC_KEY_SIZE = 32;
-var DEBUG = 1;
+var REFRESH_INTERVAL = 600000;
+
+setInterval(function() {
+    console.log("Querying DHT for updated entries");
+    queryDHT();
+}, REFRESH_INTERVAL);
 
 var initialKey = new Buffer(
   'nyJDeBAaWjndr2wEIualWD4y7I8=',
@@ -29,38 +30,43 @@ var initialKey = new Buffer(
 )
 
 var key;
+var index;
 
 var domainToIp = {}
 
 function queryDHT() {
     if (!key) {
         key = initialKey
+        index = 0
     }
-    console.log("querying dht", key);
     dht.get(key, function (err, res) {
         if (err) {
             console.error("Error reading from dht", err);
         } else {
             if (res != null) {
-              console.log(res)
-              console.log("Read from dht", res.v.toString());
+              // console.log(res)
+              console.log(`Read page[${index}] ~~~~~~~~~~~~~~`);
               var arr = res.v.toString().split(" ");
               var len = arr.length - 1
               for (var i = 0; i < len; i++) {
                   var kv = arr[i].split(":")
                   domainToIp[kv[0]] = kv[1]
+                  console.log(kv)
               }
               if (arr[len] === 'null') {
                   key = initialKey
+                  index = 0
+                  console.log('DNS records fetched from DHT. Ready.')
               } else {
+                  console.log(`Pointer to next page = ${arr[len]} ->`)
                   key = new Buffer(
                       arr[len],
                       'base64'
                   )
+                  index++
                   queryDHT(key)
               }
             } else {
-              console.log(res)
               queryDHT(key)
             }
         }
