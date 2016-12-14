@@ -13,27 +13,12 @@
 // THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 //
 
-// var ed = require('ed25519-supercop');
+var ed = require('ed25519-supercop');
 var path = require('path');
 
 
 var DHT = require('bittorrent-dht');
-var dht = new DHT({ verify: { verify: function (signature, message, publicKey) {
-  if (typeof signature === 'string') signature = Buffer(signature, 'hex')
-  else if (!Buffer.isBuffer(signature)) {
-    throw new Error('message must be a buffer or a string')
-  }
-  if (typeof message === 'string') message = Buffer(message)
-  else if (!Buffer.isBuffer(message)) {
-    throw new Error('message must be a buffer or a string')
-  }
-  if (typeof publicKey === 'string') publicKey = Buffer(publicKey, 'hex')
-  else if (!Buffer.isBuffer(publicKey)) {
-    throw new Error('public key must be a buffer or hex string')
-  }
-  return bindings.verify(signature, message, publicKey)
-} } });
-
+var dht = new DHT({ verify: ed.verify });
 var MAX_SIZE = 100;
 var PUBLIC_KEY_SIZE = 32;
 var DEBUG = 1;
