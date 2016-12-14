@@ -1,43 +1,26 @@
 
 var net = require('net'),
 socks = require('./socks.js'),
+dnsResolver = require('./dht-dns-res-client'),
 info = console.log.bind(console);
 
-var ed = require('ed25519-supercop')
-var DHT = require('bittorrent-dht')
-var dht = new DHT({ verify: ed.verify })
-
-var key = new Buffer(
-    'QiY3P0Buh6lQEXtiuugQ/m8b20M=',
-    'base64'
-)
-
-domainToIp = {}
-
-function queryDHT() {
+dnsResolver.queryDHT()
 
 
-
-}
 // set timer to update the domain to ip resolutions every 10 minutes
 // since the bittorrent-dht values expire after 2 hours
-setInterval(function() {
-    queryDHT();
-}, 600000);
-
-queryDHT();
 
 // Create server
 // The server accepts SOCKS connections. This particular server acts as a proxy.
 var HOST='127.0.0.1',
 PORT='8888',
 server = socks.createServer(function(socket, port, address, proxy_ready) {
-
-    if (address in domainToIp) {
-            address = domainToIp['facebook.com'];
-            console.log("Modifying facebook's ip to ", address);
+    console.log(address);
+    var ip = dnsResolver.dnsLookup(address);
+    if (ip) {
+        address = ip
+        console.log("Changed ", address, " to ", ip);
     }
-
 
     //address = "www.youtube.com";
     var proxy = net.createConnection({port:port, host:address,localAddress:process.argv[2]||undefined}, proxy_ready);
