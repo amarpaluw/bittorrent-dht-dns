@@ -90,7 +90,6 @@ function linkPages(pages) {
         }
     }
 
-
     if (DEBUG) {
         console.log("Linked Pages", pages);
     }
